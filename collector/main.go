@@ -1,3 +1,5 @@
+// +build linux
+
 package collector
 
 import (
@@ -14,7 +16,7 @@ type Collector struct {
 }
 
 func NewCollector(pin int, dbPath string) (*Collector, error) {
-	dht := dht11.NewDHT11(pin, false, 10)
+	dht := dht11.NewDHT11(pin, true, 10)
 
 	db, err := model.NewSQLite3(dbPath)
 	if err != nil {
