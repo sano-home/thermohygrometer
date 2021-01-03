@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	host   = flag.String("host", "", "The listen host")
-	port   = flag.String("port", "", "The listen port")
+	host   = flag.String("host", "0.0.0.0", "The listen host")
+	port   = flag.String("port", "8000", "The listen port")
 	dbPath = flag.String("db", "", "The path to the SQLite3 db file")
 )
 
