@@ -50,7 +50,7 @@ func (c *Collector) Run(ctx context.Context) error {
 	th := &model.TemperatureAndHumidity{
 		Temperature:   temperature,
 		Humidity:      humidity,
-		Unixtimestamp: time.Now().UTC().Unix(),
+		Unixtimestamp: time.Now().Local().Unix(),
 	}
 	err = th.Create(ctx, tx)
 	if err != nil {
