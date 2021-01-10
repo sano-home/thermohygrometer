@@ -76,8 +76,8 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 	}{
 		{
 			name:   "all data",
-			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.Local),
-			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.Local),
+			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.UTC),
+			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.UTC),
 			expect: []*TemperatureAndHumidity{
 				&TemperatureAndHumidity{
 					ID:            ths[size-1].ID,
@@ -101,8 +101,8 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 		},
 		{
 			name:   "latest data",
-			since:  time.Date(2021, time.January, 10, 1, 2, 5, 0, time.Local),
-			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.Local),
+			since:  time.Date(2021, time.January, 10, 1, 2, 5, 0, time.UTC),
+			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.UTC),
 			expect: []*TemperatureAndHumidity{
 				&TemperatureAndHumidity{
 					ID:            ths[size-1].ID,
@@ -114,8 +114,8 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 		},
 		{
 			name:   "oldest data",
-			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.Local),
-			before: time.Date(2021, time.January, 10, 1, 2, 3, 0, time.Local),
+			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.UTC),
+			before: time.Date(2021, time.January, 10, 1, 2, 3, 0, time.UTC),
 			expect: []*TemperatureAndHumidity{
 				&TemperatureAndHumidity{
 					ID:            ths[size-3].ID,
@@ -127,8 +127,8 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 		},
 		{
 			name:   "out of range",
-			since:  time.Date(2021, time.January, 10, 1, 2, 1, 0, time.Local),
-			before: time.Date(2021, time.January, 10, 1, 2, 2, 0, time.Local),
+			since:  time.Date(2021, time.January, 10, 1, 2, 1, 0, time.UTC),
+			before: time.Date(2021, time.January, 10, 1, 2, 2, 0, time.UTC),
 			expect: []*TemperatureAndHumidity{},
 		},
 	}

@@ -79,9 +79,9 @@ type (
 		Total int `json:"total"`
 	}
 	Data struct {
-		Temperature float32 `json:"temperature"`
-		Humidity    float32 `json:"humidity"`
-		Timestamp   int64   `json:"timestamp"`
+		Temperature float32   `json:"temperature"`
+		Humidity    float32   `json:"humidity"`
+		Timestamp   time.Time `json:"timestamp"`
 	}
 )
 
@@ -114,20 +114,18 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 		return
 	}
 
-	_since, err := time.Parse("20060102150405", since)
+	_since, err := time.Parse(time.RFC3339, since)
 	if err != nil {
-		log.Printf(`time.Parse("20060102150405", since) failed: %v`, err)
+		log.Printf(`time.Parse(time.RFC3339, since) failed: %v`, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	_since = _since.Local()
-	_before, err := time.Parse("20060102150405", before)
+	_before, err := time.Parse(time.RFC3339, before)
 	if err != nil {
-		log.Printf(`time.Parse("20060102150405", before) failed: %v`, err)
+		log.Printf(`time.Parse(time.RFC3339, before) failed: %v`, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	_before = _before.Local()
 
 	if !_before.After(_since) {
 		log.Printf(`"since" should be after "before"`)
@@ -146,7 +144,7 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 		data = append(data, Data{
 			Temperature: v.Temperature,
 			Humidity:    v.Humidity,
-			Timestamp:   v.Unixtimestamp,
+			Timestamp:   time.Unix(v.Unixtimestamp, 0).UTC(),
 		})
 	}
 	resp := TemperatureAndHumidityHistoriesResponse{
