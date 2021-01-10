@@ -70,14 +70,14 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 
 	tests := []struct {
 		name   string
-		limit  int64
-		offset int64
+		since  time.Time
+		before time.Time
 		expect []*TemperatureAndHumidity
 	}{
 		{
 			name:   "all data",
-			limit:  size,
-			offset: 0,
+			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.Local),
+			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.Local),
 			expect: []*TemperatureAndHumidity{
 				&TemperatureAndHumidity{
 					ID:            ths[size-1].ID,
@@ -101,8 +101,8 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 		},
 		{
 			name:   "latest data",
-			limit:  1,
-			offset: 0,
+			since:  time.Date(2021, time.January, 10, 1, 2, 5, 0, time.Local),
+			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.Local),
 			expect: []*TemperatureAndHumidity{
 				&TemperatureAndHumidity{
 					ID:            ths[size-1].ID,
@@ -114,8 +114,8 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 		},
 		{
 			name:   "oldest data",
-			limit:  1,
-			offset: size - 1,
+			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.Local),
+			before: time.Date(2021, time.January, 10, 1, 2, 3, 0, time.Local),
 			expect: []*TemperatureAndHumidity{
 				&TemperatureAndHumidity{
 					ID:            ths[size-3].ID,
@@ -125,11 +125,17 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 				},
 			},
 		},
+		{
+			name:   "out of range",
+			since:  time.Date(2021, time.January, 10, 1, 2, 1, 0, time.Local),
+			before: time.Date(2021, time.January, 10, 1, 2, 2, 0, time.Local),
+			expect: []*TemperatureAndHumidity{},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.Background()
-			ths, err := GetTemperatureAndHumidities(ctx, db, tt.limit, tt.offset)
+			ths, err := GetTemperatureAndHumidities(ctx, db, tt.since, tt.before)
 			if err != nil {
 				t.Errorf(`err should be nil, got %v`, err)
 			}

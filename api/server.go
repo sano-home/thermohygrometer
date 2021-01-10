@@ -63,26 +63,28 @@ func (s *Server) CurrentTemperatureAndHumidity(w http.ResponseWriter, r *http.Re
 	w.WriteHeader(http.StatusOK)
 	err = json.NewEncoder(w).Encode(resp)
 	if err != nil {
-		log.Printf("model.GetLatestTemperatureAndHumidity failed: %v", err)
+		log.Printf("json.NewEncoder(w).Encode(resp) failed: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	return
 }
 
-type TemperatureAndHumidityHistoriesResponse struct {
+type (
+	TemperatureAndHumidityHistoriesResponse struct {
+		Pages Pages  `json:"pages"`
+		Data  []Data `json:"data"`
+	}
 	Pages struct {
-		Total   int `json:"total"`
-		Current int `json:"current"`
-	} `json:"pages"`
-	Data []struct {
+		Total int `json:"total"`
+	}
+	Data struct {
 		Temperature float32 `json:"temperature"`
 		Humidity    float32 `json:"humidity"`
 		Timestamp   int64   `json:"timestamp"`
-	} `json:"data"`
-}
+	}
+)
 
-// TODO
 func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -98,16 +100,67 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 	}
 	defer tx.Rollback()
 
-	limit := int64(100)
-	offset := int64(0)
-	_, err = model.GetTemperatureAndHumidities(ctx, tx, limit, offset)
+	v := r.URL.Query()
+	if v == nil {
+		log.Printf("r.URL.Query() is nil")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	since := v.Get("since")
+	before := v.Get("before")
+	if since == "" || before == "" {
+		log.Printf(`since = "" || before = ""`)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	_since, err := time.Parse("2006-01-02 15:04:05", since)
+	if err != nil {
+		log.Printf(`time.Parse("2006-01-02 15:04:05", since) failed: %v`, err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	_before, err := time.Parse("2006-01-02 15:04:05", before)
+	if err != nil {
+		log.Printf(`time.Parse("2006-01-02 15:04:05", before) failed: %v`, err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	if !_since.After(_before) {
+		log.Printf(`"since" should be after "before"`)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	ths, err := model.GetTemperatureAndHumidities(ctx, tx, _since, _before)
 	if err != nil {
 		log.Printf("model.GetLatestTemperatureAndHumidity failed: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	var data []Data
+	for _, v := range ths {
+		data = append(data, Data{
+			Temperature: v.Temperature,
+			Humidity:    v.Humidity,
+			Timestamp:   v.Unixtimestamp,
+		})
+	}
+	resp := TemperatureAndHumidityHistoriesResponse{
+		Pages: Pages{
+			Total: len(ths),
+		},
+		Data: data,
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	err = json.NewEncoder(w).Encode(resp)
+	if err != nil {
+		log.Printf("json.NewEncoder(w).Encode(resp) failed: %v", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	return
 }
 
