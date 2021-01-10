@@ -120,14 +120,12 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	_since = _since.Local()
 	_before, err := time.Parse("20060102150405", before)
 	if err != nil {
 		log.Printf(`time.Parse("20060102150405", before) failed: %v`, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	_before = _before.Local()
 
 	if !_before.After(_since) {
 		log.Printf(`"since" should be after "before"`)
