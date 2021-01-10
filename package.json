@@ -1,0 +1,13 @@
+{
+  "name": "thermohygrometer",
+  "version": "0.1.0",
+  "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "cd ./ui && npm run precommit && cd ../"
+    }
+  },
+  "devDependencies": {
+    "husky": "^4.3.7"
+  }
+}

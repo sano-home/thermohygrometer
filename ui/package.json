@@ -7,15 +7,14 @@
     "build": "next build",
     "start": "next start",
     "eslint": "eslint --ext .ts,.tsx ./",
-    "format": "prettier --write ./pages"
+    "format": "prettier --write ./pages",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "*.{ts,tsx}": [
+      "format",
+      "eslint"
+    ]
   },
   "dependencies": {
     "next": "^10.0.0",
@@ -32,7 +31,6 @@
     "eslint-plugin-jsdoc": "^30.7.13",
     "eslint-plugin-no-null": "^1.0.2",
     "eslint-plugin-prefer-arrow": "^1.2.2",
-    "husky": "^4.3.7",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"
