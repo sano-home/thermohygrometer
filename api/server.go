@@ -27,9 +27,9 @@ func NewServer(dbPath string) (*Server, error) {
 }
 
 type CurrentTemperatureAndHumidityResponse struct {
-	Temperature float32 `json:"temperature"`
-	Humidity    float32 `json:"humidity"`
-	Timestamp   int64   `json:"timestamp"`
+	Temperature float32   `json:"temperature"`
+	Humidity    float32   `json:"humidity"`
+	Timestamp   time.Time `json:"timestamp"`
 }
 
 func (s *Server) CurrentTemperatureAndHumidity(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +56,7 @@ func (s *Server) CurrentTemperatureAndHumidity(w http.ResponseWriter, r *http.Re
 	resp := &CurrentTemperatureAndHumidityResponse{
 		Temperature: th.Temperature,
 		Humidity:    th.Humidity,
-		Timestamp:   th.Unixtimestamp,
+		Timestamp:   time.Unix(th.Unixtimestamp, 0).UTC(),
 	}
 
 	w.Header().Set("Content-Type", "application/json")
