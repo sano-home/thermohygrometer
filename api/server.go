@@ -144,7 +144,7 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 		data = append(data, Data{
 			Temperature: v.Temperature,
 			Humidity:    v.Humidity,
-			Timestamp:   time.Unix(v.Unixtimestamp, 0),
+			Timestamp:   time.Unix(v.Unixtimestamp, 0).UTC(),
 		})
 	}
 	resp := TemperatureAndHumidityHistoriesResponse{
