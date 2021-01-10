@@ -17,7 +17,7 @@ func TestCreateTemperatureAndHumidityData(t *testing.T, db DBer) ([]*Temperature
 	th = &TemperatureAndHumidity{
 		Temperature:   11.1,
 		Humidity:      22.2,
-		Unixtimestamp: time.Now().Unix(),
+		Unixtimestamp: time.Date(2021, time.January, 10, 1, 2, 3, 0, time.Local).Unix(),
 	}
 	err = th.Create(context.Background(), db)
 	if err != nil {
@@ -29,7 +29,7 @@ func TestCreateTemperatureAndHumidityData(t *testing.T, db DBer) ([]*Temperature
 	th = &TemperatureAndHumidity{
 		Temperature:   33.3,
 		Humidity:      44.4,
-		Unixtimestamp: time.Now().Unix(),
+		Unixtimestamp: time.Date(2021, time.January, 10, 1, 2, 4, 0, time.Local).Unix(),
 	}
 	err = th.Create(context.Background(), db)
 	if err != nil {
@@ -41,7 +41,7 @@ func TestCreateTemperatureAndHumidityData(t *testing.T, db DBer) ([]*Temperature
 	th = &TemperatureAndHumidity{
 		Temperature:   55.5,
 		Humidity:      66.6,
-		Unixtimestamp: time.Now().Unix(),
+		Unixtimestamp: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.Local).Unix(),
 	}
 	err = th.Create(context.Background(), db)
 	if err != nil {

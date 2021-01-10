@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -73,14 +74,14 @@ func GetLatestTemperatureAndHumidity(ctx context.Context, q Queryer) (*Temperatu
 	return &th, nil
 }
 
-func GetTemperatureAndHumidities(ctx context.Context, q Queryer, limit, offset int64) ([]*TemperatureAndHumidity, error) {
+func GetTemperatureAndHumidities(ctx context.Context, q Queryer, since, before time.Time) ([]*TemperatureAndHumidity, error) {
 	sqlStmt := `SELECT id, temperature, humidity, unixtimestamp
 				FROM temperature_and_humidity
-				ORDER BY unixtimestamp
-				LIMIT $1 OFFSET $2`
+				WHERE unixtimestamp BETWEEN $1 AND $2
+				ORDER BY unixtimestamp`
 
 	rows, err := q.QueryContext(ctx,
-		sqlStmt, limit, offset)
+		sqlStmt, since.Unix(), before.Unix())
 	if err != nil {
 		return nil, err
 	}
