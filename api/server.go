@@ -129,7 +129,7 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 	}
 	_before = _before.Local()
 
-	if !_since.After(_before) {
+	if !_before.After(_since) {
 		log.Printf(`"since" should be after "before"`)
 		w.WriteHeader(http.StatusBadRequest)
 		return
