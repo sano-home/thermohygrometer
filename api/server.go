@@ -63,7 +63,7 @@ func (s *Server) CurrentTemperatureAndHumidity(w http.ResponseWriter, r *http.Re
 	w.WriteHeader(http.StatusOK)
 	err = json.NewEncoder(w).Encode(resp)
 	if err != nil {
-		log.Printf("model.GetLatestTemperatureAndHumidity failed: %v", err)
+		log.Printf("json.NewEncoder(w).Encode(resp) failed: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
