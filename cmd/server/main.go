@@ -23,7 +23,7 @@ func main() {
 		os.Exit(1)
 	}
 	if err := s.Run(*host, *port); err != nil {
-		log.Println("s.Run failed: %v", err)
+		log.Printf("s.Run failed: %v", err)
 		os.Exit(1)
 	}
 }
