@@ -79,19 +79,19 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.UTC),
 			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.UTC),
 			expect: []*TemperatureAndHumidity{
-				&TemperatureAndHumidity{
+				{
 					ID:            ths[size-1].ID,
 					Temperature:   ths[size-1].Temperature,
 					Humidity:      ths[size-1].Humidity,
 					Unixtimestamp: ths[size-1].Unixtimestamp,
 				},
-				&TemperatureAndHumidity{
+				{
 					ID:            ths[size-2].ID,
 					Temperature:   ths[size-2].Temperature,
 					Humidity:      ths[size-2].Humidity,
 					Unixtimestamp: ths[size-2].Unixtimestamp,
 				},
-				&TemperatureAndHumidity{
+				{
 					ID:            ths[size-3].ID,
 					Temperature:   ths[size-3].Temperature,
 					Humidity:      ths[size-3].Humidity,
@@ -104,7 +104,7 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 			since:  time.Date(2021, time.January, 10, 1, 2, 5, 0, time.UTC),
 			before: time.Date(2021, time.January, 10, 1, 2, 5, 0, time.UTC),
 			expect: []*TemperatureAndHumidity{
-				&TemperatureAndHumidity{
+				{
 					ID:            ths[size-1].ID,
 					Temperature:   ths[size-1].Temperature,
 					Humidity:      ths[size-1].Humidity,
@@ -117,7 +117,7 @@ func TestGetTemperatureAndHumidities(t *testing.T) {
 			since:  time.Date(2021, time.January, 10, 1, 2, 3, 0, time.UTC),
 			before: time.Date(2021, time.January, 10, 1, 2, 3, 0, time.UTC),
 			expect: []*TemperatureAndHumidity{
-				&TemperatureAndHumidity{
+				{
 					ID:            ths[size-3].ID,
 					Temperature:   ths[size-3].Temperature,
 					Humidity:      ths[size-3].Humidity,
