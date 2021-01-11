@@ -4,8 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"time"
-
-	_ "github.com/mattn/go-sqlite3"
 )
 
 // Queryer interface implements QueryRowContext, QueryContext and ExecContext
