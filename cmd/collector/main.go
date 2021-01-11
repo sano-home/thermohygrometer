@@ -1,3 +1,5 @@
+// +build linux
+
 package main
 
 import (
@@ -6,6 +8,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/sano-home/thermohygrometer/collector"
 )

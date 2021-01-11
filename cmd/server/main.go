@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/mattn/go-sqlite3"
+
 	"github.com/sano-home/thermohygrometer/api"
 )
 
@@ -23,7 +25,7 @@ func main() {
 		os.Exit(1)
 	}
 	if err := s.Run(*host, *port); err != nil {
-		log.Println("s.Run failed: %v", err)
+		log.Printf("s.Run failed: %v", err)
 		os.Exit(1)
 	}
 }

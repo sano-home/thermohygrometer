@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// TestCreateTemperatureAndHumidityData is a helper function for testing.
 func TestCreateTemperatureAndHumidityData(t *testing.T, db DBer) ([]*TemperatureAndHumidity, func()) {
 	var (
 		ths []*TemperatureAndHumidity
@@ -53,6 +54,7 @@ func TestCreateTemperatureAndHumidityData(t *testing.T, db DBer) ([]*Temperature
 	return ths, cleanup
 }
 
+// TestCleanUpTemperatureAndHumidityFunc is a helper function for testing.
 func TestCleanUpTemperatureAndHumidityFunc(t *testing.T, db DBer) func() {
 	return func() {
 		_, err := db.ExecContext(context.Background(),

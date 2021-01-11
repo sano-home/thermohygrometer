@@ -11,11 +11,13 @@ import (
 	"github.com/sano-home/thermohygrometer/model"
 )
 
+// Collector is a Collector.
 type Collector struct {
 	dht dht11.DHT11er
 	db  model.DBer
 }
 
+// NewCollector returns Collector.
 func NewCollector(pin int, dbPath string) (*Collector, error) {
 	dht := dht11.NewDHT11(pin, true, 10)
 
@@ -29,6 +31,7 @@ func NewCollector(pin int, dbPath string) (*Collector, error) {
 	}, nil
 }
 
+// Run runs a collector.
 func (c *Collector) Run(ctx context.Context) error {
 	// get data from dht11
 	temperature, humidity, err := c.dht.Get(ctx)
