@@ -12,10 +12,12 @@ import (
 	"github.com/sano-home/thermohygrometer/model"
 )
 
+// Server is an API Server.
 type Server struct {
 	db model.DBer
 }
 
+// NewServer Returns Server.
 func NewServer(dbPath string) (*Server, error) {
 	db, err := model.NewSQLite3(dbPath)
 	if err != nil {
@@ -26,12 +28,14 @@ func NewServer(dbPath string) (*Server, error) {
 	}, nil
 }
 
+// CurrentTemperatureAndHumidityResponse represents the response from API Server.
 type CurrentTemperatureAndHumidityResponse struct {
 	Temperature float32   `json:"temperature"`
 	Humidity    float32   `json:"humidity"`
 	Timestamp   time.Time `json:"timestamp"`
 }
 
+// CurrentTemperatureAndHumidity handles a HTTP request for the latest temperature and humidity.
 func (s *Server) CurrentTemperatureAndHumidity(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -70,21 +74,25 @@ func (s *Server) CurrentTemperatureAndHumidity(w http.ResponseWriter, r *http.Re
 	return
 }
 
-type (
-	TemperatureAndHumidityHistoriesResponse struct {
-		Pages Pages  `json:"pages"`
-		Data  []Data `json:"data"`
-	}
-	Pages struct {
-		Total int `json:"total"`
-	}
-	Data struct {
-		Temperature float32   `json:"temperature"`
-		Humidity    float32   `json:"humidity"`
-		Timestamp   time.Time `json:"timestamp"`
-	}
-)
+// TemperatureAndHumidityHistoriesResponse represents the response from API server.
+type TemperatureAndHumidityHistoriesResponse struct {
+	Pages Pages  `json:"pages"`
+	Data  []Data `json:"data"`
+}
 
+// Pages represents page information.
+type Pages struct {
+	Total int `json:"total"`
+}
+
+// Data represents Temperature, Humidity and Timestamp.
+type Data struct {
+	Temperature float32   `json:"temperature"`
+	Humidity    float32   `json:"humidity"`
+	Timestamp   time.Time `json:"timestamp"`
+}
+
+// TemperatureAndHumidityHistories handles a HTTP request for temperature and humidity history.
 func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -164,6 +172,7 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 	return
 }
 
+// Run runs a http server.
 func (s *Server) Run(host, port string) error {
 	http.HandleFunc("/current", s.CurrentTemperatureAndHumidity)
 	http.HandleFunc("/histories", s.TemperatureAndHumidityHistories)

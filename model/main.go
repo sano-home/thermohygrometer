@@ -8,24 +8,31 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// Queryer interface implements QueryRowContext, QueryContext and ExecContext
+// that has same signature in database/sql package.
 type Queryer interface {
 	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
 	QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error)
 	ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error)
 }
 
+// TXer interface implements QueryRowContext, QueryContext, ExecContext,
+// Commit and Rollback that has same signature in database/sql package.
 type TXer interface {
 	Queryer
 	Commit() error
 	Rollback() error
 }
 
+// DBer interface implements QueryRowContext, QueryContext, ExecContext,
+// BeginTx and Close that has same signature in database/sql package.
 type DBer interface {
 	Queryer
 	BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error)
 	Close() error
 }
 
+// NewSQLite3 returns DBer.
 func NewSQLite3(dbPath string) (DBer, error) {
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
@@ -34,6 +41,7 @@ func NewSQLite3(dbPath string) (DBer, error) {
 	return db, err
 }
 
+// TemperatureAndHumidity is TemperatureAndHumidity.
 type TemperatureAndHumidity struct {
 	ID            int64
 	Temperature   float32
@@ -41,6 +49,7 @@ type TemperatureAndHumidity struct {
 	Unixtimestamp int64
 }
 
+// Create creates TemperatureAndHumidity.
 func (t *TemperatureAndHumidity) Create(ctx context.Context, q Queryer) error {
 	sqlStmt := `INSERT INTO temperature_and_humidity
 					(temperature, humidity, unixtimestamp)
@@ -59,6 +68,7 @@ func (t *TemperatureAndHumidity) Create(ctx context.Context, q Queryer) error {
 	return nil
 }
 
+// GetLatestTemperatureAndHumidity returns the latest temperature and humidity.
 func GetLatestTemperatureAndHumidity(ctx context.Context, q Queryer) (*TemperatureAndHumidity, error) {
 	sqlStmt := `SELECT id, temperature, humidity, unixtimestamp
 				FROM temperature_and_humidity
@@ -74,6 +84,7 @@ func GetLatestTemperatureAndHumidity(ctx context.Context, q Queryer) (*Temperatu
 	return &th, nil
 }
 
+// GetTemperatureAndHumidities returns temperature and humidity history.
 func GetTemperatureAndHumidities(ctx context.Context, q Queryer, since, before time.Time) ([]*TemperatureAndHumidity, error) {
 	sqlStmt := `SELECT id, temperature, humidity, unixtimestamp
 				FROM temperature_and_humidity
