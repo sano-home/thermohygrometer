@@ -3,6 +3,8 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SWRConfig } from 'swr';
 
+import { AppContainer } from '../components/AppContainer';
+
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <>
@@ -14,12 +16,14 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
       <h1>Thermohygrometer</h1>
       <SWRConfig
         value={{
-          refreshInterval: 3000,
+          refreshInterval: 60000,
           fetcher: (resource, init) =>
             fetch(resource, init).then((res) => res.json()),
         }}
       >
-        <Component {...pageProps} />
+        <AppContainer>
+          <Component {...pageProps} />
+        </AppContainer>
       </SWRConfig>
 
       <style jsx global>{`
@@ -34,6 +38,10 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
         * {
           box-sizing: border-box;
+        }
+
+        h1 {
+          text-align: center;
         }
       `}</style>
     </>

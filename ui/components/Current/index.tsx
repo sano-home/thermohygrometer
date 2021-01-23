@@ -1,6 +1,9 @@
 import { FC } from 'react';
 import useSWR from 'swr';
 
+import { Card } from './Card';
+import { GridContainer, GridItem } from './Grid';
+
 interface ResponseCurrent {
   temperature: number;
   humidity: number;
@@ -16,9 +19,19 @@ export const Current: FC = () => {
 
   // render data
   return (
-    <div>
-      <p>気温：{data.temperature}</p>
-      <p>湿度：{data.humidity}</p>
-    </div>
+    <>
+      <GridContainer>
+        <GridItem>
+          <Card
+            title="Temperature"
+            value={data.temperature.toString()}
+            suffix="℃"
+          />
+        </GridItem>
+        <GridItem>
+          <Card title="Humidity" value={data.humidity.toString()} suffix="%" />
+        </GridItem>
+      </GridContainer>
+    </>
   );
 };
