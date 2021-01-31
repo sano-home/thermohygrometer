@@ -32,7 +32,6 @@ const convertToChartData = (
 
 export const HistoryChart: FC = () => {
   const { data, error } = useSWR<ResponseHistories, Error>('/api/histories');
-  console.log(data, error);
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;

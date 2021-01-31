@@ -12,7 +12,6 @@ export interface ResponseCurrent {
 
 export const Current: FC = () => {
   const { data, error } = useSWR<ResponseCurrent, Error>('/api/current');
-  console.log(data, error);
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
