@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
       <h2 className="app-title">Thermohygrometer</h2>
       <SWRConfig
         value={{
-          refreshInterval: 60000,
+          refreshInterval: 10000,
           fetcher: (resource, init) =>
             fetch(resource, init).then((res) => res.json()),
         }}
