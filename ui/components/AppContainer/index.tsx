@@ -6,12 +6,13 @@ export const AppContainer: FC = ({ children }) => {
       {children}
       <style jsx>{`
         .container {
-          margin: 32px;
-          padding: 0 0.5rem;
+          margin: auto;
+          padding: 1rem;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          max-width: 800px;
         }
       `}</style>
     </div>

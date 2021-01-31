@@ -35,6 +35,7 @@ export const Card: FC<{
             color: inherit;
             border: 2px solid;
             border-radius: 10px;
+            background-color: #fff;
             font-weight: bold;
           }
 

@@ -18,14 +18,8 @@ export const GridContainer: FC = ({ children }) => {
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            width: 800px;
-          }
-
-          @media (max-width: 767px) {
-            .grid {
-              width: 100%;
-              flex-direction: column;
-            }
+            width: 100%;
+            margin-bottom: 16px;
           }
         `}
       </style>
@@ -40,12 +34,12 @@ export const GridItem: FC = ({ children }) => {
       <style jsx>
         {`
           .grid-item {
-            width: 384px;
+            width: 48%;
           }
 
           @media (max-width: 767px) {
             .grid-item {
-              margin-bottom: 16px;
+              min-width: 160px;
             }
           }
         `}
