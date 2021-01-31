@@ -17,6 +17,9 @@
     ]
   },
   "dependencies": {
+    "@nivo/bar": "^0.67.0",
+    "@nivo/core": "^0.67.0",
+    "@nivo/line": "^0.67.0",
     "next": "^10.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",

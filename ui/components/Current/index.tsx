@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { Card } from './Card';
 import { GridContainer, GridItem } from './Grid';
 
-interface ResponseCurrent {
+export interface ResponseCurrent {
   temperature: number;
   humidity: number;
   timestamp: string; // '2021-01-10T13:25:48Z'
