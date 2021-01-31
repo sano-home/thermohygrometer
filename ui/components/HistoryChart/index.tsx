@@ -25,14 +25,27 @@ const convertToChartData = (
   histories: ResponseHistories['data'],
   field: 'temperature' | 'humidity'
 ): LineChartItem['data'] => {
-  return histories.map((item, index) => ({
+  return histories.slice(0, 10).map((item, index) => ({
     x: formatTimestamp(item.timestamp),
     y: item[field],
   }));
 };
 
 export const HistoryChart: FC = () => {
-  const { data, error } = useSWR<ResponseHistories, Error>('/api/histories');
+  const fetcher = (url: string) => {
+    const now = new Date();
+    const since = new Date(now.getTime() - 200000).toISOString();
+    const before = now.toISOString();
+
+    return fetch(`${url}?since=${since}&before=${before}`).then((r) =>
+      r.json()
+    );
+  };
+
+  const { data, error } = useSWR<ResponseHistories, Error>(
+    '/api/histories',
+    fetcher
+  );
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading histories...</div>;
@@ -141,5 +154,6 @@ const formatTimestamp = (timestamp: string): string => {
   const time = new Date(timestamp);
   const hour = time.getHours().toString().padStart(2, '0');
   const minute = time.getMinutes().toString().padStart(2, '0');
-  return `${hour}:${minute}`;
+  const second = time.getSeconds().toString().padStart(2, '0');
+  return `${hour}:${minute}:${second}`;
 };
