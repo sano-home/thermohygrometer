@@ -4,6 +4,7 @@ import { GridContainer, GridItem } from '../Grid';
 
 export const DateTime: FC<{ timestamp: string }> = ({ timestamp }) => {
   const currentTime = new Date(timestamp);
+  const time = currentTime.toLocaleTimeString();
 
   return (
     <div className="container">
@@ -13,7 +14,7 @@ export const DateTime: FC<{ timestamp: string }> = ({ timestamp }) => {
         </GridItem>
         <GridItem>
           <h1 style={{ textAlign: 'right' }}>
-            {currentTime.toLocaleTimeString().substring(0, 5)}
+            {time.substring(0, time.lastIndexOf(':'))}
           </h1>
         </GridItem>
       </GridContainer>
