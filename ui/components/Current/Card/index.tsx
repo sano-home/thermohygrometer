@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import useSWR from 'swr';
 
+import { colors } from '../../../constants/colors';
+
 interface ResponseCurrent {
   temperature: number;
   humidity: number;
@@ -11,10 +13,11 @@ export const Card: FC<{
   title: string;
   value: string;
   suffix: string;
-}> = ({ title, value, suffix }) => {
+  colorTheme: 'temperature' | 'humidity';
+}> = ({ title, value, suffix, colorTheme }) => {
   return (
     <>
-      <div className="card">
+      <div className={`card ${colorTheme}`}>
         <h3>{title}</h3>
         <p>
           <span className="value">{value}</span>
@@ -30,9 +33,18 @@ export const Card: FC<{
             padding: 1.5rem;
             text-align: left;
             color: inherit;
-            border: 1px solid #eaeaea;
+            border: 2px solid;
             border-radius: 10px;
+            background-color: #fff;
             font-weight: bold;
+          }
+
+          .temperature {
+            border-color: ${colors.temperature};
+          }
+
+          .humidity {
+            border-color: ${colors.humidity};
           }
 
           h3 {

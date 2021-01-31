@@ -2,6 +2,7 @@ import { FC } from 'react';
 import useSWR from 'swr';
 
 import { Card } from './Card';
+import { DateTime } from './DateTime';
 import { GridContainer, GridItem } from './Grid';
 
 export interface ResponseCurrent {
@@ -12,24 +13,30 @@ export interface ResponseCurrent {
 
 export const Current: FC = () => {
   const { data, error } = useSWR<ResponseCurrent, Error>('/api/current');
-  console.log(data, error);
 
   if (error) return <div>failed to load</div>;
-  if (!data) return <div>loading...</div>;
+  if (!data) return <div>loading current data...</div>;
 
   // render data
   return (
     <>
+      <DateTime timestamp={data.timestamp} />
       <GridContainer>
         <GridItem>
           <Card
             title="Temperature"
             value={data.temperature.toString()}
             suffix="℃"
+            colorTheme="temperature"
           />
         </GridItem>
         <GridItem>
-          <Card title="Humidity" value={data.humidity.toString()} suffix="%" />
+          <Card
+            title="Humidity"
+            value={data.humidity.toString()}
+            suffix="%"
+            colorTheme="humidity"
+          />
         </GridItem>
       </GridContainer>
     </>

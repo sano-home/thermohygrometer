@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Thermohygrometer</h1>
+      <h2 className="app-title">Thermohygrometer</h2>
       <SWRConfig
         value={{
           refreshInterval: 60000,
@@ -34,14 +34,18 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
             Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
             sans-serif;
+          background-color: #eeeeee;
         }
 
         * {
           box-sizing: border-box;
         }
 
-        h1 {
+        .app-title {
           text-align: center;
+          background: #fff;
+          margin: 0;
+          padding: 16px;
         }
       `}</style>
     </>

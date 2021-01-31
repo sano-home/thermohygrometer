@@ -1,30 +1,30 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { getRandomTemperature, getRandomHumidity } from './current';
+
+// API mock /api/histories
 export default function handler(req: NextApiRequest, res: NextApiResponse): void {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
+
+  const now: number = new Date().getTime();
+
+  const arr = Array.of(1,2,3,4,5,6,7,8,9);
+  const data = arr.map((item, index) => (
+    {
+      'temperature': getRandomTemperature(),
+      'humidity': getRandomHumidity(),
+      'timestamp': new Date(now - 600000 * index).toISOString()
+    }
+  ));
+
+
   res.end(JSON.stringify(
     {
       'pages': {
         'total': 3
       },
-      'data': [
-        {
-          'temperature': 22,
-          'humidity': 12,
-          'timestamp': '2021-01-02T11:37:42.337Z'
-        },
-        {
-          'temperature': 23,
-          'humidity': 13,
-          'timestamp': '2021-01-02T11:38:42.337Z'
-        },
-        {
-          'temperature': 24,
-          'humidity': 14,
-          'timestamp': '2021-01-02T11:39:42.337Z'
-        }
-      ]
+      'data': data.reverse()
     }
   ));
 }

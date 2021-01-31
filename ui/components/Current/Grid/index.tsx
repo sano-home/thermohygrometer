@@ -14,18 +14,12 @@ export const GridContainer: FC = ({ children }) => {
       <style jsx>
         {`
           .grid {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            width: 800px;
-          }
-
-          @media (max-width: 767px) {
-            .grid {
-              width: 100%;
-              flex-direction: column;
-            }
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 16px;
+            grid-row-gap: 16px;
+            margin-bottom: 16px;
           }
         `}
       </style>
@@ -40,13 +34,7 @@ export const GridItem: FC = ({ children }) => {
       <style jsx>
         {`
           .grid-item {
-            width: 384px;
-          }
-
-          @media (max-width: 767px) {
-            .grid-item {
-              margin-bottom: 16px;
-            }
+            min-width: 160px;
           }
         `}
       </style>

@@ -1,11 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
+// API mock /api/current
 export default function handler(req: NextApiRequest, res: NextApiResponse): void {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({
-    'temperature':22,
-    'humidity':15,
-    'timestamp':'2021-01-10T13:25:48Z'
+    'temperature': getRandomTemperature(),
+    'humidity': getRandomHumidity(),
+    'timestamp': new Date().toISOString()
   }));
 }
+
+export const getRandomTemperature = ():number => Math.ceil(Math.random() * 20);
+export const getRandomHumidity = ():number => Math.ceil(Math.random() * 80);
