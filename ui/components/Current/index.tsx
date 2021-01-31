@@ -25,10 +25,16 @@ export const Current: FC = () => {
             title="Temperature"
             value={data.temperature.toString()}
             suffix="℃"
+            colorTheme="temperature"
           />
         </GridItem>
         <GridItem>
-          <Card title="Humidity" value={data.humidity.toString()} suffix="%" />
+          <Card
+            title="Humidity"
+            value={data.humidity.toString()}
+            suffix="%"
+            colorTheme="humidity"
+          />
         </GridItem>
       </GridContainer>
     </>

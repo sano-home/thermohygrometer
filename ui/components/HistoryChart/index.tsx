@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import { ResponsiveLine } from '@nivo/line';
 
 import { ResponseCurrent } from '../Current';
+import { colors } from '../../constants/colors';
 
 interface ResponseHistories {
   pages: {
@@ -13,7 +14,6 @@ interface ResponseHistories {
 
 interface LineChartItem {
   id: string;
-  color: string;
   data: {
     x: string;
     y: number;
@@ -25,7 +25,7 @@ const convertToChartData = (
   field: 'temperature' | 'humidity'
 ): LineChartItem['data'] => {
   return histories.map((item, index) => ({
-    x: item.timestamp,
+    x: formatTimestamp(item.timestamp),
     y: item[field],
   }));
 };
@@ -38,19 +38,18 @@ export const HistoryChart: FC = () => {
 
   const temperatureChartData: LineChartItem = {
     id: 'temperature',
-    color: 'hsl(190, 70%, 50%)',
     data: convertToChartData(data.data, 'temperature'),
   };
 
   const humidityChartData: LineChartItem = {
     id: 'humidity',
-    color: 'hsl(207, 70%, 50%)',
     data: convertToChartData(data.data, 'humidity'),
   };
 
   return (
     <div style={{ height: 320, width: 800 }}>
       <ResponsiveLine
+        colors={[colors.temperature]}
         data={[temperatureChartData]}
         margin={{ top: 50, right: 40, bottom: 50, left: 80 }}
         xScale={{ type: 'point' }}
@@ -92,6 +91,7 @@ export const HistoryChart: FC = () => {
 
       <ResponsiveLine
         data={[humidityChartData]}
+        colors={[colors.humidity]}
         margin={{ top: 50, right: 40, bottom: 50, left: 80 }}
         xScale={{ type: 'point' }}
         yScale={{
@@ -129,15 +129,13 @@ export const HistoryChart: FC = () => {
         pointLabelYOffset={-12}
         useMesh={true}
       />
-
-      {data.data.map((item, index) => (
-        <div key={item.timestamp}>
-          <p>{item.timestamp}</p>
-          <p>{item.temperature}</p>
-          <p>{item.humidity}</p>
-          <hr />
-        </div>
-      ))}
     </div>
   );
+};
+
+const formatTimestamp = (timestamp: string): string => {
+  const time = new Date(timestamp);
+  const hour = time.getHours().toString().padStart(2, '0');
+  const minute = time.getMinutes().toString().padStart(2, '0');
+  return `${hour}:${minute}`;
 };
