@@ -21,7 +21,6 @@ export const DateTime: FC<{ timestamp: string }> = ({ timestamp }) => {
       <style jsx>{`
         .container {
           width: 100%;
-          text-align: left;
         }
 
         h1 {
