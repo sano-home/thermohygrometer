@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 7777",
+    "mock": "next dev -p 7777",
+    "dev": "PORT=7778 node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=7778 NODE_ENV=production node server.js",
+    "start:mock": "next start -p 7777",
     "eslint": "eslint --ext .ts,.tsx ./",
     "format": "prettier --write ./pages",
     "precommit": "lint-staged"
@@ -20,6 +22,8 @@
     "@nivo/bar": "^0.67.0",
     "@nivo/core": "^0.67.0",
     "@nivo/line": "^0.67.0",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.6",
     "next": "^10.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
