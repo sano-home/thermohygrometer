@@ -15,7 +15,7 @@ app.prepare().then(() => {
   server.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://192.168.86.29:8000/',
+      target: 'http://192.168.86.29:8000/', // FIXME
       changeOrigin: true,
       pathRewrite: {'^/api/' : '/'}
     })
