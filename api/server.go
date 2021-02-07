@@ -212,7 +212,7 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 	data := retrieve(ths, _before, _interval, _count)
 	resp := TemperatureAndHumidityHistoriesResponse{
 		Pages: Pages{
-			Total: len(ths),
+			Total: len(data),
 		},
 		Data: data,
 	}
