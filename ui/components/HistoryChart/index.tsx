@@ -36,7 +36,7 @@ export const HistoryChart: FC = () => {
     const now = new Date();
     const before = now.toISOString();
     const count = 12;
-    const interval = 10 * 60 * 1000; // 10 minutes
+    const interval = 60 * 60 * 1000; // 60 minutes
 
     return fetch(`${url}?before=${before}&count=${count}&interval=${interval}`).then((r) =>
       r.json()
