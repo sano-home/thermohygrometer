@@ -92,6 +92,39 @@ type Data struct {
 	Timestamp   time.Time `json:"timestamp"`
 }
 
+func retrieve(ths []*model.TemperatureAndHumidity, before time.Time, intervalMilliSecond, count int) []Data {
+	var data []Data
+
+	var (
+		c int
+		i int
+	)
+	for {
+		if c >= count || i > len(ths) {
+			break
+		}
+		d := time.Duration(-1*intervalMilliSecond*c) * time.Millisecond
+		for i < len(ths) {
+			tmp := ths[i].Temperature
+			hum := ths[i].Humidity
+			ts := ths[i].Unixtimestamp
+			if time.Unix(ts, 0).UTC().Before(before.Add(d)) {
+				data = append(data, Data{
+					Temperature: tmp,
+					Humidity:    hum,
+					Timestamp:   time.Unix(ts, 0).UTC(),
+				})
+				c++
+				i++
+				break
+			}
+			i++
+		}
+		i++
+	}
+	return data
+}
+
 // TemperatureAndHumidityHistories handles a HTTP request for temperature and humidity history.
 func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
