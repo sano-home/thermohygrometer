@@ -159,8 +159,9 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+		_before = _before.UTC()
 	} else {
-		_before = time.Now()
+		_before = time.Now().UTC()
 	}
 
 	// interval: require milli sec
