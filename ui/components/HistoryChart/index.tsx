@@ -25,7 +25,7 @@ const convertToChartData = (
   histories: ResponseHistories['data'],
   field: 'temperature' | 'humidity'
 ): LineChartItem['data'] => {
-  return histories.slice(0, 10).map((item, index) => ({
+  return histories.slice(0, histories.length).reverse().map((item, index) => ({
     x: formatTimestamp(item.timestamp),
     y: item[field],
   }));
@@ -34,10 +34,11 @@ const convertToChartData = (
 export const HistoryChart: FC = () => {
   const fetcher = (url: string) => {
     const now = new Date();
-    const since = new Date(now.getTime() - 200000).toISOString();
     const before = now.toISOString();
+    const count = 12;
+    const interval = 10 * 60 * 1000; // 10 minutes
 
-    return fetch(`${url}?since=${since}&before=${before}`).then((r) =>
+    return fetch(`${url}?before=${before}&count=${count}&interval=${interval}`).then((r) =>
       r.json()
     );
   };
