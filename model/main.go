@@ -87,7 +87,7 @@ func GetTemperatureAndHumidities(ctx context.Context, q Queryer, since, before t
 	sqlStmt := `SELECT id, temperature, humidity, unixtimestamp
 				FROM temperature_and_humidity
 				WHERE unixtimestamp BETWEEN $1 AND $2
-				ORDER BY unixtimestamp`
+				ORDER BY unixtimestamp DESC`
 
 	rows, err := q.QueryContext(ctx,
 		sqlStmt, since.Unix(), before.Unix())
