@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/sano-home/thermohygrometer/model"
@@ -92,6 +93,39 @@ type Data struct {
 	Timestamp   time.Time `json:"timestamp"`
 }
 
+func retrieve(ths []*model.TemperatureAndHumidity, before time.Time, intervalMilliSecond, count int) []Data {
+	var data []Data
+
+	var (
+		c int
+		i int
+	)
+	for {
+		if c >= count || i > len(ths) {
+			break
+		}
+		d := time.Duration(-1*intervalMilliSecond*c) * time.Millisecond
+		for i < len(ths) {
+			tmp := ths[i].Temperature
+			hum := ths[i].Humidity
+			ts := ths[i].Unixtimestamp
+			if time.Unix(ts, 0).UTC().Before(before.Add(d)) {
+				data = append(data, Data{
+					Temperature: tmp,
+					Humidity:    hum,
+					Timestamp:   time.Unix(ts, 0).UTC(),
+				})
+				c++
+				i++
+				break
+			}
+			i++
+		}
+		i++
+	}
+	return data
+}
+
 // TemperatureAndHumidityHistories handles a HTTP request for temperature and humidity history.
 func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
@@ -114,27 +148,54 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	since := v.Get("since")
+
+	// before: optional => default now
+	var _before time.Time
 	before := v.Get("before")
-	if since == "" || before == "" {
-		log.Printf(`since = "" || before = ""`)
+	if before == "" {
+		_before, err = time.Parse(time.RFC3339, before)
+		if err != nil {
+			log.Printf(`time.Parse(time.RFC3339, before) failed: %v`, err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		_before = _before.UTC()
+	} else {
+		_before = time.Now().UTC()
+	}
+
+	// interval: require milli sec
+	var _interval int
+	interval := v.Get("interval")
+	if interval == "" {
+		log.Printf(`interval = ""`)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	_interval, err = strconv.Atoi(interval)
+	if err != nil {
+		log.Printf(`strconv.Atoi(interval) failed: %v`, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	_since, err := time.Parse(time.RFC3339, since)
-	if err != nil {
-		log.Printf(`time.Parse(time.RFC3339, since) failed: %v`, err)
+	// count: require
+	var _count int
+	count := v.Get("count")
+	if count == "" {
+		log.Printf(`count = ""`)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	_before, err := time.Parse(time.RFC3339, before)
+	_count, err = strconv.Atoi(count)
 	if err != nil {
-		log.Printf(`time.Parse(time.RFC3339, before) failed: %v`, err)
+		log.Printf(`strconv.Atoi(count) failed: %v`, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
+	diff := time.Duration(-1*_interval*_count) * time.Millisecond
+	_since := _before.Add(diff)
 	if !_before.After(_since) {
 		log.Printf(`"since" should be after "before"`)
 		w.WriteHeader(http.StatusBadRequest)
@@ -147,17 +208,11 @@ func (s *Server) TemperatureAndHumidityHistories(w http.ResponseWriter, r *http.
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	var data []Data
-	for _, v := range ths {
-		data = append(data, Data{
-			Temperature: v.Temperature,
-			Humidity:    v.Humidity,
-			Timestamp:   time.Unix(v.Unixtimestamp, 0).UTC(),
-		})
-	}
+
+	data := retrieve(ths, _before, _interval, _count)
 	resp := TemperatureAndHumidityHistoriesResponse{
 		Pages: Pages{
-			Total: len(ths),
+			Total: len(data),
 		},
 		Data: data,
 	}
