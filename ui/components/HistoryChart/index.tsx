@@ -74,12 +74,11 @@ export const HistoryChart: FC = () => {
           xScale={{ type: 'point' }}
           yScale={{
             type: 'linear',
-            min: 'auto',
-            max: 'auto',
+            min: 0,
+            max: 30,
             stacked: true,
             reverse: false,
           }}
-          yFormat=" >-.2f"
           axisTop={null}
           axisRight={{
             orient: 'left',
@@ -121,12 +120,12 @@ export const HistoryChart: FC = () => {
           xScale={{ type: 'point' }}
           yScale={{
             type: 'linear',
-            min: 'auto',
-            max: 'auto',
+            min: 0,
+            max: 100,
             stacked: true,
             reverse: false,
           }}
-          yFormat=" >-.2f"
+          yFormat=" >-.0r"
           axisTop={null}
           axisRight={{
             orient: 'left',
