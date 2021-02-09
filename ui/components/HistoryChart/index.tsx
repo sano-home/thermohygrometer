@@ -25,10 +25,13 @@ const convertToChartData = (
   histories: ResponseHistories['data'],
   field: 'temperature' | 'humidity'
 ): LineChartItem['data'] => {
-  return histories.slice(0, histories.length).reverse().map((item, index) => ({
-    x: formatTimestamp(item.timestamp),
-    y: item[field],
-  }));
+  return histories
+    .slice(0, histories.length)
+    .reverse()
+    .map((item, index) => ({
+      x: formatTimestamp(item.timestamp),
+      y: item[field],
+    }));
 };
 
 export const HistoryChart: FC = () => {
@@ -38,9 +41,9 @@ export const HistoryChart: FC = () => {
     const count = 12;
     const interval = 60 * 60 * 1000; // 60 minutes
 
-    return fetch(`${url}?before=${before}&count=${count}&interval=${interval}`).then((r) =>
-      r.json()
-    );
+    return fetch(
+      `${url}?before=${before}&count=${count}&interval=${interval}`
+    ).then((r) => r.json());
   };
 
   const { data, error } = useSWR<ResponseHistories, Error>(
@@ -78,7 +81,12 @@ export const HistoryChart: FC = () => {
           }}
           yFormat=" >-.2f"
           axisTop={null}
-          axisRight={null}
+          axisRight={{
+            orient: 'left',
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+          }}
           axisBottom={{
             orient: 'bottom',
             tickSize: 5,
@@ -120,7 +128,12 @@ export const HistoryChart: FC = () => {
           }}
           yFormat=" >-.2f"
           axisTop={null}
-          axisRight={null}
+          axisRight={{
+            orient: 'left',
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+          }}
           axisBottom={{
             orient: 'bottom',
             tickSize: 5,
