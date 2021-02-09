@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
 
   const now: number = new Date().getTime();
 
-  const arr = Array.of(1,2,3,4,5,6,7,8,9);
+  const arr = Array.of(1,2,3,4,5,6,7,8,9,10,11,12);
   const data = arr.map((item, index) => (
     {
       'temperature': getRandomTemperature(),
@@ -22,9 +22,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
   res.end(JSON.stringify(
     {
       'pages': {
-        'total': 3
+        'total': arr.length
       },
-      'data': data.reverse()
+      'data': data
     }
   ));
 }
