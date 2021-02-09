@@ -55,6 +55,8 @@ server -host 0.0.0.0 -port 8000 -db /path/to/sensor.db
 
 Get the latest temperature and humidity from database.
 
+### Example
+
 ```
 {
     "temperature":22,
@@ -63,51 +65,86 @@ Get the latest temperature and humidity from database.
 }
 ```
 
-## GET /histories?since=YYYY-MM-DDThh:mm:ss.SSSZ&before=YYYY-MM-DDThh:mm:ss.SSSZ
+## GET /histories
 
-Get temperature and humidity history between `since` and `before`.
+Get temperature and humidity history in the range of given parameters.
 
 - parameters
-  - since: RFC3339 format (ex: 2021-01-10T13:27:00.337Z)
   - before: RFC3339 format (ex: 2021-01-10T13:28:00.337Z)
+  - interval: millisecond
+  - count: The number of data
+
+### Example
+
+The followings shows the response of `/histories?before=2021-02-09T03:54:13Z&interval=3600000&count=12`. It gets last `12` temperature and humidity data before `2021-02-09 03:54:13 UTC` at intervals of `3600000 millisecond (1 hour)`.
 
 ```
 {
-  "pages": {
-    "total": 6
-  },
-  "data": [
-    {
-      "temperature": 22,
-      "humidity": 14,
-      "timestamp": "2021-01-10T13:27:10Z"
+    "pages": {
+        "total": 12
     },
-    {
-      "temperature": 22,
-      "humidity": 14,
-      "timestamp": "2021-01-10T13:27:20Z"
-    },
-    {
-      "temperature": 22,
-      "humidity": 14,
-      "timestamp": "2021-01-10T13:27:30Z"
-    },
-    {
-      "temperature": 22,
-      "humidity": 14,
-      "timestamp": "2021-01-10T13:27:40Z"
-    },
-    {
-      "temperature": 22,
-      "humidity": 13,
-      "timestamp": "2021-01-10T13:27:50Z"
-    },
-    {
-      "temperature": 22,
-      "humidity": 15,
-      "timestamp": "2021-01-10T13:28:00Z"
-    }
-  ]
+    "data": [
+        {
+            "temperature": 23,
+            "humidity": 12,
+            "timestamp": "2021-02-09T15:54:13Z"
+        },
+        {
+            "temperature": 22,
+            "humidity": 12,
+            "timestamp": "2021-02-09T14:54:06Z"
+        },
+        {
+            "temperature": 25,
+            "humidity": 6,
+            "timestamp": "2021-02-09T13:52:13Z"
+        },
+        {
+            "temperature": 24,
+            "humidity": 13,
+            "timestamp": "2021-02-09T12:54:11Z"
+        },
+        {
+            "temperature": 21,
+            "humidity": 12,
+            "timestamp": "2021-02-09T11:54:13Z"
+        },
+        {
+            "temperature": 23,
+            "humidity": 15,
+            "timestamp": "2021-02-09T10:54:13Z"
+        },
+        {
+            "temperature": 23,
+            "humidity": 12,
+            "timestamp": "2021-02-09T09:53:53Z"
+        },
+        {
+            "temperature": 24,
+            "humidity": 3,
+            "timestamp": "2021-02-09T08:53:35Z"
+        },
+        {
+            "temperature": 23,
+            "humidity": 5,
+            "timestamp": "2021-02-09T07:54:06Z"
+        },
+        {
+            "temperature": 24,
+            "humidity": 5,
+            "timestamp": "2021-02-09T06:53:51Z"
+        },
+        {
+            "temperature": 26,
+            "humidity": 4,
+            "timestamp": "2021-02-09T05:54:16Z"
+        },
+        {
+            "temperature": 24,
+            "humidity": 5,
+            "timestamp": "2021-02-09T04:54:16Z"
+        }
+    ]
 }
 ```
 
