@@ -11,5 +11,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
   }));
 }
 
-export const getRandomTemperature = ():number => Math.ceil(Math.random() * 20);
+export const getRandomTemperature = ():number => Math.ceil(Math.random() * 200) / 10;
 export const getRandomHumidity = ():number => Math.ceil(Math.random() * 80);
