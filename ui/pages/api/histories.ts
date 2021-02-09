@@ -22,9 +22,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse): void
   res.end(JSON.stringify(
     {
       'pages': {
-        'total': 12
+        'total': arr.length
       },
-      'data': data.reverse()
+      'data': data
     }
   ));
 }
