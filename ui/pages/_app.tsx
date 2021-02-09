@@ -6,6 +6,11 @@ import { SWRConfig } from 'swr';
 import { AppContainer } from '../components/AppContainer';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+  console.log(process.env.NODE_ENV);
+
+  const refreshInterval =
+    process.env.NODE_ENV === 'development' ? 10000 : 60000;
+
   return (
     <>
       <Head>
@@ -16,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
       <h2 className="app-title">Thermohygrometer</h2>
       <SWRConfig
         value={{
-          refreshInterval: 10000,
+          refreshInterval: refreshInterval,
           fetcher: (resource, init) =>
             fetch(resource, init).then((res) => res.json()),
         }}
