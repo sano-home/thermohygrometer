@@ -8,6 +8,7 @@ const handle = app.getRequestHandler()
 
 const host = '0.0.0.0';
 const port = parseInt(process.env.PORT, 10) || 7000;
+const api = process.env.THERMOHYGROMETER_API || 'http://localhost:8000/';
 
 app.prepare().then(() => {
   const server = express()
@@ -15,7 +16,7 @@ app.prepare().then(() => {
   server.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://192.168.86.29:8000/', // FIXME
+      target: api,
       changeOrigin: true,
       pathRewrite: {'^/api/' : '/'}
     })
