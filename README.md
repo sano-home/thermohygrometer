@@ -1,14 +1,24 @@
 # thermohygrometer
 
-Read temperature and humidity from DHT11 sensor and save its history to SQLite3 database on Raspberry Pi. The thermohygrometer is three main things below.
+Read temperature and humidity from DHT11 sensor and save its history to SQLite3 database on Raspberry Pi. The thermohygrometer is four main things below.
 
-- Collector: Read data from DHT11 via GPIO and insert it into SQLite3 database.
+- UI: UI component that shows temperature and humidity chart.
+- Collector: Read measured data from DHT11 via GPIO and save it into SQLite3 database.
 - Server: API Server to retrieve temperature and humidity history.
 - SQLite3: As a database.
 
 # Installation
 
 Clone and build on Raspberry Pi that you wanna run it on.
+
+## UI
+
+```
+npm install
+npm run build
+export THERMOHYGROMETER_API=http://<Server IP>:<Server Port>/
+npm run start
+```
 
 ## SQLite3 database
 
@@ -76,7 +86,7 @@ Get temperature and humidity history in the range of given parameters.
 
 ### Example
 
-The followings shows the response of `/histories?before=2021-02-09T03:54:13Z&interval=3600000&count=12`. It gets last `12` temperature and humidity data before `2021-02-09 03:54:13 UTC` at intervals of `3600000 millisecond (1 hour)`.
+The followings shows the response of `/histories?before=2021-02-09T03:54:13Z&interval=3600000&count=12`. It gets `12` pieces of temperature and humidity data, one per every `3600000 millisecond (1 hour)` interval before and at `2021-02-09 03:54:13 UTC`.
 
 ```
 {
