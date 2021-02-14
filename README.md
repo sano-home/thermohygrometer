@@ -7,6 +7,8 @@ Read temperature and humidity from DHT11 sensor and save its history to SQLite3 
 - Server: API Server to retrieve temperature and humidity history.
 - SQLite3: As a database.
 
+<img width="512" alt="thermohygrometer" src="https://raw.githubusercontent.com/sano-home/thermohygrometer/main/thermohygrometer.png">
+
 # Installation
 
 Clone and build on Raspberry Pi that you wanna run it on.
