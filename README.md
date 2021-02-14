@@ -18,8 +18,7 @@ Clone and build on Raspberry Pi that you wanna run it on.
 ```
 npm install
 npm run build
-export THERMOHYGROMETER_API=http://<Server IP>:<Server Port>/
-npm run start
+THERMOHYGROMETER_API_URL=http://<Server IP>:<API Port> THERMOHYGROMETER_UI_PORT=<UI App Port> npm start
 ```
 
 ## SQLite3 database

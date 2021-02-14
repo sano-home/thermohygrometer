@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "mock": "next dev -p 7777",
-    "dev": "PORT=7778 node server.js",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "PORT=7778 NODE_ENV=production THERMOHYGROMETER_API=${THERMOHYGROMETER_API} node server.js",
+    "start": "NODE_ENV=production node server.js",
     "start:mock": "next start -p 7777",
     "eslint": "eslint --ext .ts,.tsx ./",
     "format": "prettier --write ./pages",

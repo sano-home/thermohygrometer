@@ -7,8 +7,8 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 
 const host = '0.0.0.0';
-const port = parseInt(process.env.PORT, 10) || 7000;
-const api = process.env.THERMOHYGROMETER_API || 'http://localhost:8000/';
+const port = parseInt(process.env.THERMOHYGROMETER_UI_PORT, 10) || 7778;
+const api = process.env.THERMOHYGROMETER_API_URL || 'http://localhost:8000';
 
 app.prepare().then(() => {
   const server = express()
@@ -16,7 +16,7 @@ app.prepare().then(() => {
   server.use(
     '/api',
     createProxyMiddleware({
-      target: api,
+      target: api + '/',
       changeOrigin: true,
       pathRewrite: {'^/api/' : '/'}
     })
