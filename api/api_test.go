@@ -2,6 +2,7 @@ package api
 
 import (
 	"io/ioutil"
+	"net"
 	"net/http"
 	"testing"
 	"time"
@@ -10,6 +11,16 @@ import (
 
 	"github.com/sano-home/thermohygrometer/model"
 )
+
+func waitFor(host, port string) {
+	addr := net.JoinHostPort(host, port)
+	for {
+		_, err := net.Dial("tcp", addr)
+		if err == nil {
+			break
+		}
+	}
+}
 
 func TestCurrent(t *testing.T) {
 	db, err := model.NewSQLite3("../model/test.db")
@@ -26,6 +37,7 @@ func TestCurrent(t *testing.T) {
 	go func() {
 		s.Run("127.0.0.1", "15000")
 	}()
+	waitFor("127.0.0.1", "15000")
 
 	c := http.Client{}
 	resp, err := c.Get("http://127.0.0.1:15000/current")
