@@ -1,5 +1,7 @@
 # thermohygrometer
 
+[![test](https://github.com/sano-home/thermohygrometer/actions/workflows/test.yml/badge.svg)](https://github.com/sano-home/thermohygrometer/actions/workflows/test.yml)
+
 Read temperature and humidity from DHT11 sensor and save its history to SQLite3 database on Raspberry Pi. The thermohygrometer is four main things below.
 
 - UI: UI component that shows temperature and humidity chart.
