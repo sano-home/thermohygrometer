@@ -1,0 +1,28 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "1.16"
+          - "1.15"
+          - "1.14"
+
+    steps:
+      - name: Install Go
+        uses: actions/setup-go/@v2
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Checkout code
+        uses: actions/checkout/@v2
+
+      - name: Run test
+        run: go test -v ./...
