@@ -22,7 +22,7 @@
     "@nivo/bar": "^0.67.0",
     "@nivo/core": "^0.67.0",
     "@nivo/line": "^0.67.0",
-    "express": "^4.22.3",
+    "express": "^5.3.0",
     "http-proxy-middleware": "^1.0.6",
     "next": "^10.0.0",
     "react": "16.13.1",
