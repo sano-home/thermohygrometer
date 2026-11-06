@@ -4,7 +4,7 @@ go 1.27.3
 
 require (
 	github.com/d2r2/go-dht v0.0.0-20200119175940-4ba96621a218
-	github.com/mattn/go-sqlite3 v1.14.6
+	github.com/mattn/go-sqlite3 v1.14.52
 )
 
 require (
