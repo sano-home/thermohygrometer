@@ -1,6 +1,6 @@
 
 test: dep
-	go test ./... -v
+	go test -p 1 ./... -v
 
 dev-db:
 	sqlite3 ./db/dev.db < ./db/schema.sql
